@@ -1,11 +1,11 @@
-create table person (
+create table if not exists person (
     id serial primary key not null,
     login varchar(2000),
     password varchar(2000),
     employee_id integer
 );
 
-create table employee (
+create table if not exists employee (
     id serial primary key not null,
     name varchar(255),
     lastname varchar(255),

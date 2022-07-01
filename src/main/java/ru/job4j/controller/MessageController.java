@@ -18,23 +18,15 @@ public class MessageController {
         this.messageRepository = messages;
     }
 
-    /*
-    Get all messages
-    If you want messages only for one room,
-    then request should be like this: http://localhost:8080/message?roomId=1
-     */
-    @GetMapping("")
-    public List<Message> getAllEmployee(@RequestParam(defaultValue = "0") int roomId) {
-        if (roomId == 0) {
-            return messageRepository.findAll();
-        }
-        return messageRepository.findByRoomId(roomId);
+    @GetMapping("/")
+    public List<Message> getAllMessages() {
+        return messageRepository.findAll();
     }
 
     /*
     Create message
      */
-    @PostMapping("")
+    @PostMapping("/")
     public ResponseEntity<Message> create(@RequestBody Message message) {
         if (message.getId() != 0) {
             return new ResponseEntity("redundant param: id MUST be 0", HttpStatus.NOT_ACCEPTABLE);
@@ -42,8 +34,8 @@ public class MessageController {
         if (message.getMessage() == null || message.getMessage().trim().length() == 0) {
             return new ResponseEntity("missed param: message", HttpStatus.NOT_ACCEPTABLE);
         }
-        if (message.getRoomId() == 0) {
-            return new ResponseEntity("missed param: roomId", HttpStatus.NOT_ACCEPTABLE);
+        if (message.getRoom() == null) {
+            return new ResponseEntity("missed param: room", HttpStatus.NOT_ACCEPTABLE);
         }
         if (message.getPersonId() == 0) {
             return new ResponseEntity("missed param: personId", HttpStatus.NOT_ACCEPTABLE);
@@ -54,7 +46,7 @@ public class MessageController {
     /*
     Update message
      */
-    @PutMapping("")
+    @PutMapping("/")
     public ResponseEntity<Message> update(@RequestBody Message message) {
         if (message.getId() == 0) {
             return new ResponseEntity("missed param: id", HttpStatus.NOT_ACCEPTABLE);
@@ -62,8 +54,8 @@ public class MessageController {
         if (message.getMessage() == null || message.getMessage().trim().length() == 0) {
             return new ResponseEntity("missed param: message", HttpStatus.NOT_ACCEPTABLE);
         }
-        if (message.getRoomId() == 0) {
-            return new ResponseEntity("missed param: roomId", HttpStatus.NOT_ACCEPTABLE);
+        if (message.getRoom() == null) {
+            return new ResponseEntity("missed param: room", HttpStatus.NOT_ACCEPTABLE);
         }
         if (message.getPersonId() == 0) {
             return new ResponseEntity("missed param: personId", HttpStatus.NOT_ACCEPTABLE);

@@ -1,6 +1,9 @@
 package ru.job4j.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -9,7 +12,13 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "name")
     private String name;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    private List<Message> messages;
 
     public int getId() {
         return id;
@@ -25,6 +34,14 @@ public class Room {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 
     @Override
